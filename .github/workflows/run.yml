@@ -7,14 +7,14 @@ on:
     types: started
   workflow_dispatch:
   schedule:
-    - cron: 00 16 * * *  
+    - cron: 00 16 * * *
 jobs:
-  build-and-deploy:  
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment: user
     steps:
-      - name: 🔀 random delay 0-300 秒之前
-        run: sleep $((RANDOM % 301))
+      - name: 🔀 random delay 0-3 分钟之前
+        run: sleep $((RANDOM % 181))
 
       - name: 🔌 Check out code
         uses: actions/checkout@main
@@ -34,7 +34,7 @@ jobs:
         if: vars.cacheToken == '1'
         run: |
           echo "CACHE_TOKEN=1" >> $GITHUB_ENV
-      
+
       - name: 📹 Restore cached Cookie
         id: cache-cookie-restore
         if: vars.cacheToken == '1'
@@ -42,7 +42,7 @@ jobs:
         with:
           path: .token
           key: ${{ runner.os }}-cache-token
-    
+
       - name: 🔧 Init secrets
         uses: shine1594/secrets-to-env-action@master
         with:
@@ -77,4 +77,4 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
           retain_days: 0
-          keep_minimum_runs: 50
+          keep_minimum_runs: 50    
